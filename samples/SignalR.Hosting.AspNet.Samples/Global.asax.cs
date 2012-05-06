@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
+using System.Web.Http;
 using System.Web.Routing;
 using SignalR.Samples.Hubs.DemoHub;
 using SignalR.Samples.Raw;
@@ -34,6 +35,9 @@ namespace SignalR.Hosting.AspNet.Samples
 
             RouteTable.Routes.MapConnection<Raw>("raw", "raw/{*operation}");
             RouteTable.Routes.MapConnection<Streaming>("streaming", "streaming/{*operation}");
+
+            GlobalConfiguration.Configuration.MapConnection<Raw>("raw2", "raw2/{*operation}");
+            GlobalConfiguration.Configuration.MapConnection<Streaming>("streaming2", "streaming2/{*operation}");
         }
     }
 }

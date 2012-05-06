@@ -48,11 +48,30 @@
       <HintPath>..\..\packages\AntiXSS.4.0.1\lib\net35\HtmlSanitizationLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.4.5.4\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Net.Http">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.0.20505.0\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.4.0.20505.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.0.20505.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Http">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.4.0.20505.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20505.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bg.jpg" />
@@ -121,6 +140,7 @@
     <Content Include="Hubs\ShapeShare\ShapeShare.css" />
     <Content Include="Hubs\ShapeShare\ShapeShare.js" />
     <Content Include="Hubs\ShapeShare\index.htm" />
+    <Content Include="Raw\webapi.htm" />
     <Content Include="Raw\crossdomain.htm" />
     <Content Include="Raw\index.htm" />
     <Content Include="Scripts\jcanvas.js" />
@@ -211,6 +231,10 @@
     <ProjectReference Include="..\..\SignalR.Hosting.Common\SignalR.Hosting.Common.csproj">
       <Project>{3B71F0AE-D4B6-4F47-BF62-333D45615673}</Project>
       <Name>SignalR.Hosting.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SignalR.Hosting.WebApi\SignalR.Hosting.WebApi.csproj">
+      <Project>{488E9D4A-D883-4F68-823B-018A11F3D13F}</Project>
+      <Name>SignalR.Hosting.WebApi</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\SignalR\SignalR.csproj">
       <Project>{1B9A82C4-BCA1-4834-A33E-226F17BE070B}</Project>
