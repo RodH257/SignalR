@@ -12,26 +12,80 @@ namespace SignalR.Hosting.Self.Samples
     {
         static void Main(string[] args)
         {
-            Debug.Listeners.Add(new ConsoleTraceListener());
-            Debug.AutoFlush = true;
-
-            //DefaultSelfHost();
+            var listener = new ConsoleTraceListener();
+            
+            // DefaultSelfHost();
 
             WebApiSelfHost();
 
-            Console.WriteLine("Press 'esc' to quit.");
+            Log("Press 'h' for a list of commands.");
+
             while (true)
             {
-                var ki = Console.ReadKey();
-                if (ki.Key == ConsoleKey.Escape)
+                ConsoleKeyInfo ki = Console.ReadKey(true);
+                if (ki.Key == ConsoleKey.Q)
                 {
                     break;
+                }
+
+                if (ki.Key == ConsoleKey.H)
+                {
+                    Console.WriteLine("=========================================");
+                    Console.WriteLine("                  COMMANDS               ");
+                    Console.WriteLine("=========================================");
+                    Console.WriteLine("'q' - Close the server");
+                    Console.WriteLine("'h' - Show help");
+                    Console.WriteLine("'d' - Show debugging info");
+                    Console.WriteLine("'c' - Clear console");
+                    Console.WriteLine("'b' - Broacast a message to all clients");
+                    Console.WriteLine("=========================================");
+                }
+
+                if (ki.Key == ConsoleKey.B)
+                {
+                    var connection = GlobalHost.ConnectionManager.GetConnectionContext<MyConnection>();
+                    Log("Sending ping to all clients.");
+                    connection.Connection.Broadcast("server ping").Wait();
+                    Log("Broadcast complete.");
+                }
+
+                if (ki.Key == ConsoleKey.D)
+                {
+                    if (Debug.AutoFlush)
+                    {
+                        Debug.Listeners.Remove(listener);
+                    }
+                    else
+                    {
+                        Debug.Listeners.Add(listener);
+                    }
+
+                    Debug.AutoFlush = !Debug.AutoFlush;
+                    Log("Turning debugging {0}.", Debug.AutoFlush ? "on" : "off");
+                }
+
+                if (ki.Key == ConsoleKey.C)
+                {
+                    Console.Clear();
                 }
             }
         }
 
+        private static void Log(string value, params object[] args)
+        {
+            Console.WriteLine("[" + DateTime.Now + "]: " + value, args);
+        }
+
+        private static void Log(string value)
+        {
+            Console.WriteLine("[" + DateTime.Now + "]: " + value);
+        }
+
         private static void WebApiSelfHost()
         {
+            Console.WriteLine("=============================");
+            Console.WriteLine("        WebApiSelfHost       ");
+            Console.WriteLine("=============================");
             var config = new HttpSelfHostConfiguration("http://localhost:8081");
             config.TransferMode = TransferMode.StreamedResponse;
             config.MapConnection<MyConnection>("Echo", "echo/{*operation}");
@@ -46,6 +100,9 @@ namespace SignalR.Hosting.Self.Samples
 
         private static void DefaultSelfHost()
         {
+            Console.WriteLine("=============================");
+            Console.WriteLine("        DefaultSelfHost      ");
+            Console.WriteLine("=============================");
             string url = "http://*:8081/";
             var server = new Server(url);
             server.Configuration.DisconnectTimeout = TimeSpan.Zero;
@@ -58,15 +115,6 @@ namespace SignalR.Hosting.Self.Samples
             server.Start();
 
             Console.WriteLine("Server running on {0}", url);
-
-            while (true)
-            {
-                ConsoleKeyInfo ki = Console.ReadKey(true);
-                if (ki.Key == ConsoleKey.X)
-                {
-                    break;
-                }
-            }
         }
 
         public class MyConnection : PersistentConnection

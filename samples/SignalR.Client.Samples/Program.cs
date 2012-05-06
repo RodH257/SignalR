@@ -17,7 +17,7 @@ namespace SignalR.Client.Samples
 
             //RunDemoHub(hubConnection);
 
-            RunStreamingSample();
+            Repl(args.Length == 0 ? "http://localhost:8081/echo" : args[0]);
 
             Console.ReadKey();
         }
@@ -78,35 +78,45 @@ namespace SignalR.Client.Samples
             });
         }
 
-        private static void RunStreamingSample()
+        private static void Repl(string endpoint)
         {
-            Debug.Listeners.Add(new ConsoleTraceListener());
-            Debug.AutoFlush = true;
-
-            var connection = new Connection("http://localhost:8081/echo");
+            var connection = new Connection(endpoint);
 
             connection.Received += data =>
             {
-                Console.WriteLine(data);
+                Log("[Received]: " + data);
             };
 
             connection.Reconnected += () =>
             {
-                Console.WriteLine("[{0}]: Connection restablished", DateTime.Now);
+                Log("Connection restablished");
             };
 
             connection.Error += e =>
             {
-                Console.WriteLine(e);
+                Log("[Error]: " + e);
+                Console.WriteLine();
             };
 
+            Log("Connecting to {0}...", endpoint);
             connection.Start().Wait();
+            Log("Connected with id '{0}'.", connection.ConnectionId);
 
             string line = null;
             while ((line = Console.ReadLine()) != null)
             {
                 connection.Send(line).Wait();
             }
+        }
+
+        private static void Log(string value)
+        {
+            Console.WriteLine("[" + DateTime.Now + "]: " + value);
+        }
+
+        private static void Log(string value, params object[] args)
+        {
+            Console.WriteLine("[" + DateTime.Now + "]: " + value, args);
         }
 
         public class MyConnection : PersistentConnection
